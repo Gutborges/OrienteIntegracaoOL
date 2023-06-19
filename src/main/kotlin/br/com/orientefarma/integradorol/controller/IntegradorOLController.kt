@@ -60,7 +60,7 @@ class IntegradorOLController {
     }
 
     fun enviarPendentesParaCentral(){
-        val poolThreads = ParallelExecutor.getInstance(1)
+        val poolThreads = ParallelExecutor.getInstance(2)
         try{
             val pedidoOLPendentes = PedidoOL.fromPendentes()
             for (pedidoOL in pedidoOLPendentes) {

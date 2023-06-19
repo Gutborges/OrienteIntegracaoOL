@@ -1,5 +1,6 @@
 package br.com.orientefarma.integradorol.actions
 
+import br.com.orientefarma.integradorol.commons.StatusPedidoOLEnum
 import br.com.orientefarma.integradorol.controller.IntegradorOLController
 import br.com.orientefarma.integradorol.controller.dto.PedidoOLDto
 import br.com.sankhya.extensions.actionbutton.AcaoRotinaJava
@@ -24,7 +25,18 @@ class EnviarParaCentralAcao : AcaoRotinaJava {
             return
         }
 
-        val pedidoOlDto = PedidoOLDto.fromLinhas(contextoAcao.linhas[0])
+        val registro = contextoAcao.linhas[0]
+
+        val status = registro.getCampo("STATUS").toString()
+        if(!podeEnviarParaCentral(status)){
+            val mensagem = """
+                Somente pedidos em "Importado", "Enviado para Central" ou "Pendente" podem ser enviados.
+            """.trimIndent()
+            contextoAcao.setMensagemRetorno(mensagem)
+            return
+        }
+
+        val pedidoOlDto = PedidoOLDto.fromLinhas(registro)
 
         IntegradorOLController().enviarParaCentral(pedidoOlDto)
 
@@ -34,5 +46,12 @@ class EnviarParaCentralAcao : AcaoRotinaJava {
         }else{
             contextoAcao.setMensagemRetorno("Pedido ${pedidoOlDto.first().nuNotaEnviado} criado.")
         }
+    }
+
+    fun podeEnviarParaCentral(status: String): Boolean {
+        return status == StatusPedidoOLEnum.IMPORTANDO.valor ||
+                status == StatusPedidoOLEnum.ENVIANDO_CENTRAL.valor ||
+                status == StatusPedidoOLEnum.PENDENTE.valor ||
+                status == StatusPedidoOLEnum.ERRO.valor
     }
 }

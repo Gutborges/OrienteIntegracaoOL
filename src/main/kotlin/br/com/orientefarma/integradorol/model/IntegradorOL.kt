@@ -701,7 +701,7 @@ class IntegradorOL(val pedidoOL: PedidoOL) {
         val temItemPendente = itemNotaDAO.find {
             it.where = " PENDENTE = 'S' AND NUNOTA = ? "
             it.parameters = arrayOf(nuNota)
-        }.size > 1
+        }.isNotEmpty()
 
         if(temItemPendente){
             ConfirmacaoNotaHelper.confirmarNota(nuNota.toBigDecimal(), barramento, true)
@@ -718,7 +718,7 @@ class IntegradorOL(val pedidoOL: PedidoOL) {
         val temItemPendente = itemNotaDAO.find {
             it.where = " PENDENTE = 'S' AND NUNOTA = ? "
             it.parameters = arrayOf(nuNota)
-        }.size > 1
+        }.isNotEmpty()
 
         if(temItemPendente){
             ConfirmacaoNotaHelper.confirmarNota(nuNota.toBigDecimal(), barramento,
