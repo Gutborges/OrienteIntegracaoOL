@@ -57,10 +57,9 @@ dependencies {
     implementation("javax.servlet", "servlet-api", "2.5")
     implementation("br.com.lughconsultoria", "lugh-lib", lughVersion )
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.3")
-    testImplementation("org.mockito:mockito-core:3.+")
-    testImplementation("org.mockito:mockito-junit-jupiter:5.3.1")
     testImplementation(kotlin("test"))
+    testImplementation("org.mockito", "mockito-core", "3.3.3")
+    testImplementation("org.mockito", "mockito-junit-jupiter", "5.3.1")
 
 
 }
